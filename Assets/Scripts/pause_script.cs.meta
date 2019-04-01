@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: 4b6aa861112cea54597995b8901b52c1
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - drone: {fileID: 8229619403122606859, guid: 2edfb1d277662d0479562a36ca3c790e, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
