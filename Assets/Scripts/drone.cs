@@ -15,4 +15,10 @@ public class drone : MonoBehaviour
     {
         
     }
+
+    public void Delete()
+    {
+        
+        Destroy(pause_script.selectedObject);
+    }
 }
