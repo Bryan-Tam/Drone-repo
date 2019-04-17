@@ -63,9 +63,13 @@
     <Compile Include="Assets\Scripts\drone.cs" />
     <Compile Include="Assets\Scripts\drone_info_display.cs" />
     <Compile Include="Assets\Scripts\face_camera.cs" />
+    <Compile Include="Assets\Scripts\fence_script.cs" />
     <Compile Include="Assets\Scripts\FreeCam.cs" />
     <Compile Include="Assets\Scripts\pause_script.cs" />
     <Compile Include="Assets\test_raycast.cs" />
+    <None Include="Assets\Effects\Projectors\Guidelines.txt" />
+    <None Include="Assets\Effects\Projectors\Shaders\ProjectorLight.shader" />
+    <None Include="Assets\Effects\Projectors\Shaders\ProjectorMultiply.shader" />
     <None Include="Assets\Proj.shader" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>D:/User/Documents/Unity Projects/Drone/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>

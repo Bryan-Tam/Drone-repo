@@ -18,11 +18,13 @@ public class pause_script : MonoBehaviour
     private int range = 1000;
     private GameObject instDrone;
     private int i = 1;
+    public static bool isRoute;
 
     // Start is called before the first frame update
     void Start()
     {
         paused = true;
+        isRoute = false;
         Time.timeScale = 0;
         img = play_pause.GetComponent<Image>();
         img.color = Color.yellow;
@@ -35,10 +37,10 @@ public class pause_script : MonoBehaviour
     void Update()
     {
         RaycastHit hit;
-
         // Left Clicks
         if (Input.GetMouseButtonDown(0))
         {
+            // if clicking UI
             if (EventSystem.current.IsPointerOverGameObject())
             {
                 return;
@@ -52,9 +54,22 @@ public class pause_script : MonoBehaviour
             if (Physics.Raycast(ray, out hit, range, layermask))
             {
                 // Selected ground
+                
                 if (hit.collider.gameObject.layer == 9)
                 {
-                    ClearSelection();
+                    if (!isRoute)
+                    {
+                        Debug.Log("Clear");
+                        ClearSelection();
+                    }
+                    if (isRoute)
+                    {
+                        //get coordinates
+                        Debug.Log("route");
+                        Vector3 myPoint = new Vector3(hit.point.x, hit.point.y + .5f, hit.point.z);
+                        selectedObject.GetComponent<drone>().SetWaypoint(myPoint);
+                        isRoute = false;
+                    }
                 }
 
                 // Selected a drone
@@ -71,9 +86,10 @@ public class pause_script : MonoBehaviour
             //ClearSelection();
 
         }
-
+        // Right Clicks
         if (Input.GetMouseButtonDown(1))
         {
+            // if clicking UI
             if (EventSystem.current.IsPointerOverGameObject())
             {
                 return;
@@ -117,6 +133,7 @@ public class pause_script : MonoBehaviour
         if(selectedObject != null)
         {
             selectedObject.GetComponentInChildren<Canvas>().enabled = false;
+            selectedObject.GetComponentInChildren<Projector>().enabled = false;
             selectedObject = null;
         }
     }
@@ -134,6 +151,7 @@ public class pause_script : MonoBehaviour
 
         selectedObject = obj;
         selectedObject.GetComponentInChildren<Canvas>().enabled=true;
+        selectedObject.GetComponentInChildren<Projector>().enabled = true;
     }
 
     public void Pause()

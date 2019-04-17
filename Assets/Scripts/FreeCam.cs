@@ -26,6 +26,7 @@ public class FreeCam : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        float dialation = .01700f;
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             movementSpeed = 2*move;
@@ -39,37 +40,37 @@ public class FreeCam : MonoBehaviour
 
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
-            transform.position = transform.position + (-transform.right * movementSpeed * Time.deltaTime);
+            transform.position = transform.position + (-transform.right * movementSpeed * dialation);
         }
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
         {
-            transform.position = transform.position + (transform.forward * movementSpeed * Time.deltaTime);
+            transform.position = transform.position + (transform.forward * movementSpeed * dialation);
         }
         if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
         {
-            transform.position = transform.position + (transform.right * movementSpeed * Time.deltaTime);
+            transform.position = transform.position + (transform.right * movementSpeed * dialation);
         }
         if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
         {
-            transform.position = transform.position + (-transform.forward * movementSpeed * Time.deltaTime);
+            transform.position = transform.position + (-transform.forward * movementSpeed * dialation);
         }
         if (Input.GetKey(KeyCode.Space))
         {
-            transform.Translate(transform.InverseTransformDirection(Vector3.up) * movementSpeed * Time.deltaTime);
+            transform.Translate(transform.InverseTransformDirection(Vector3.up) * movementSpeed * dialation);
         }
         if (Input.GetKey(KeyCode.LeftControl))
         {
-            transform.Translate(transform.InverseTransformDirection(- Vector3.up) * movementSpeed * Time.deltaTime);
+            transform.Translate(transform.InverseTransformDirection(- Vector3.up) * movementSpeed * dialation);
         }
 
         // keys
         if (Input.GetKey(KeyCode.Q))
         {
-            transform.Rotate(transform.InverseTransformDirection(-Vector3.up) * rotSpeed * 10 * Time.deltaTime);
+            transform.Rotate(transform.InverseTransformDirection(-Vector3.up) * rotSpeed * 10 * dialation);
         }
         if (Input.GetKey(KeyCode.E))
         {
-            transform.Rotate(transform.InverseTransformDirection(Vector3.up) * rotSpeed * 10 * Time.deltaTime);
+            transform.Rotate(transform.InverseTransformDirection(Vector3.up) * rotSpeed * 10 * dialation);
         }
     }
 }
