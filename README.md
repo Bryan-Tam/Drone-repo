@@ -8,10 +8,10 @@
 * WASD to pan around
 * Q/E to yaw to the sides
 * Ctrl to move down, space to move up
-* Click play/pause to toggle time simulation
+* Click play/pause to toggle time simulation (or P, or esc)
+* Drone routing to clickable spot (click "route" then select spot)
 
 ## To Do
-* Drone routing to clickable spot
 * Drone authenticate other drone (radius)
 * Geofence policy enforcement
 * Attacker
