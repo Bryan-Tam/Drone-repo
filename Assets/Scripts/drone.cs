@@ -48,6 +48,7 @@ public class drone : MonoBehaviour
     // advance connection status from sender to next state
     void NeighborNextState(Dictionary<drone, ConnectionStatus> droneStatuses, drone remoteDrone)
     {
+        // FIXME(chdsbd): We never set neighbors
         if (neighbors.ContainsKey(remoteDrone))
         {
             var currentStatus = neighbors[remoteDrone];
@@ -85,6 +86,15 @@ public class drone : MonoBehaviour
                 connected = true;
                 break;
             }
+        }
+
+        // TODO(chdsbd): Update mesh or whatever necesssary to change color of drone based on connection status.
+        if (connected)
+        {
+            Debug.Log("CONNECTED");
+            // FIXME(chdsbd): This doesn't actually change the color. We probably want to simplify things and remove the complex Drone mesh.
+            var material = this.GetComponent<MeshRenderer>();
+            material.material.color = Color.green;
         }
     }
 
