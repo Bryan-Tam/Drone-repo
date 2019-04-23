@@ -19,6 +19,9 @@ public class pause_script : MonoBehaviour
     private GameObject instDrone;
     private int i = 1;
     public static bool isRoute;
+    public float timescale { get; set; }
+    public Slider mainSlider;
+    public Text slidetxt;
 
     // Start is called before the first frame update
     void Start()
@@ -37,6 +40,8 @@ public class pause_script : MonoBehaviour
     void Update()
     {
         RaycastHit hit;
+        Time.timeScale = timescale;
+        slidetxt.text = mainSlider.value.ToString() + "x real time";
         // Left Clicks
         if (Input.GetMouseButtonDown(0))
         {
