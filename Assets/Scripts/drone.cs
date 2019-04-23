@@ -11,13 +11,28 @@ public class drone : MonoBehaviour
     const int MAX_COMMUNICATION_DISTANCE = 10;
     const int COMMUNICATION_FRAME_COUNT = 20;
     public bool connected = false;
+    private Renderer rend;
 
     // connection status from this Drone to all other neighbor Drones
     Dictionary<drone, ConnectionStatus> neighbors = new Dictionary<drone, ConnectionStatus>();
+    void SetColor(Color c)
+    {
+        
+        rend.material.shader = Shader.Find("_Color");
+        rend.material.SetColor("_Color", c);
 
+        //Find the Specular shader and change its Color to red
+        rend.material.shader = Shader.Find("Specular");
+        rend.material.SetColor("_SpecColor", c);
+    }
     // Start is called before the first frame update
     void Start()
     {
+        //Fetch the Renderer from the GameObject
+        rend = GetComponent<Renderer>();
+        // start the colors RED
+        SetColor(Color.red);
+
         SetWaypoint(new Vector3(0, 0, 0));
     }
 
@@ -90,13 +105,10 @@ public class drone : MonoBehaviour
             }
         }
 
-        // TODO(chdsbd): Update mesh or whatever necesssary to change color of drone based on connection status.
         if (connected)
         {
             Debug.Log("CONNECTED");
-            // FIXME(chdsbd): This doesn't actually change the color. We probably want to simplify things and remove the complex Drone mesh.
-            var material = this.GetComponent<MeshRenderer>();
-            material.material.color = Color.green;
+            SetColor(Color.green);
         }
     }
 
