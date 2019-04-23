@@ -33,7 +33,7 @@ public class drone : MonoBehaviour
             foreach (Collider c in hitColliders)
             {
                 var maybeDrone = c.GetComponent<drone>();
-                if (maybeDrone != null)
+                if (maybeDrone != null && maybeDrone != this)
                 {
                     Debug.Log($"collision {c}");
 
