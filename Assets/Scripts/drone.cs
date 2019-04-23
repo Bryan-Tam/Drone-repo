@@ -48,7 +48,6 @@ public class drone : MonoBehaviour
     // advance connection status from sender to next state
     void NeighborNextState(Dictionary<drone, ConnectionStatus> droneStatuses, drone remoteDrone)
     {
-        // FIXME(chdsbd): We never set neighbors
         if (neighbors.ContainsKey(remoteDrone))
         {
             var currentStatus = neighbors[remoteDrone];
@@ -62,6 +61,9 @@ public class drone : MonoBehaviour
                     break;
 
             }
+        } else
+        {
+            neighbors.Add(remoteDrone, ConnectionStatus.Started);
         }
 
     }
