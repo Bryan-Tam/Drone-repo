@@ -14,7 +14,7 @@ public class drone : MonoBehaviour
     private Renderer rend;
 
     // connection status from this Drone to all other neighbor Drones
-    Dictionary<drone, ConnectionStatus> neighbors = new Dictionary<drone, ConnectionStatus>();
+    private Dictionary<drone, ConnectionStatus> neighbors = new Dictionary<drone, ConnectionStatus>();
     void SetColor(Color c)
     {
         
@@ -37,6 +37,8 @@ public class drone : MonoBehaviour
     }
 
     private int FrameCount = 0;
+
+    internal Dictionary<drone, ConnectionStatus> Neighbors { get => neighbors; set => neighbors = value; }
 
     void MessageNeighbors()
     {

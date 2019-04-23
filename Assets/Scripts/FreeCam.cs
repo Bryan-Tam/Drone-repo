@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class FreeCam : MonoBehaviour
 {
-    public float movementSpeed = 10f;
-    public float rotSpeed = 2;
+    public float movementSpeed = 10f/ 10;
+    public float rotSpeed = 2 / 10;
 
     public float yaw = 0f;
     public float pitch = 0f;
@@ -26,7 +26,7 @@ public class FreeCam : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float dialation = .01700f;
+        float dialation = .01700f / 10;
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             movementSpeed = 2*move;
