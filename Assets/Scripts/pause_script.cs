@@ -14,11 +14,14 @@ public class pause_script : MonoBehaviour
     //private Renderer rend;
 
     public static GameObject selectedObject;
+    public float timescale { get; set; }
     private Image img;
     private int range = 1000;
     private GameObject instDrone;
     private int i = 1;
     public static bool isRoute;
+    public Slider mainSlider;
+    public Text slidetxt;
 
     // Start is called before the first frame update
     void Start()
@@ -30,12 +33,14 @@ public class pause_script : MonoBehaviour
         img.color = Color.yellow;
         //rend = drone.GetComponent<Renderer>();
         //rend.material.shader = Shader.Find("_color");
-
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+        Time.timeScale = timescale;
+        slidetxt.text = mainSlider.value.ToString() + "x real time";
         RaycastHit hit;
         // Left Clicks
         if (Input.GetMouseButtonDown(0))

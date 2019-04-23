@@ -60,6 +60,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\comm.cs" />
     <Compile Include="Assets\Scripts\drone.cs" />
     <Compile Include="Assets\Scripts\drone_info_display.cs" />
     <Compile Include="Assets\Scripts\face_camera.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="Assets\Scripts\FreeCam.cs" />
     <Compile Include="Assets\Scripts\pause_script.cs" />
     <Compile Include="Assets\test_raycast.cs" />
+    <Compile Include="Assets\testcol.cs" />
     <None Include="Assets\Effects\Projectors\Guidelines.txt" />
     <None Include="Assets\Effects\Projectors\Shaders\ProjectorLight.shader" />
     <None Include="Assets\Effects\Projectors\Shaders\ProjectorMultiply.shader" />
