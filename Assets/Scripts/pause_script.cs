@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.AI;
 
 public class pause_script : MonoBehaviour
 {
@@ -61,14 +62,6 @@ public class pause_script : MonoBehaviour
                         Debug.Log("Clear");
                         ClearSelection();
                     }
-                    if (isRoute)
-                    {
-                        //get coordinates
-                        Debug.Log("route");
-                        Vector3 myPoint = new Vector3(hit.point.x, hit.point.y + .5f, hit.point.z);
-                        selectedObject.GetComponent<drone>().SetWaypoint(myPoint);
-                        isRoute = false;
-                    }
                 }
 
                 // Selected a drone
@@ -113,6 +106,8 @@ public class pause_script : MonoBehaviour
                     var initialPos = GameObject.Find("Spawn Point").gameObject.transform.position;
                     instDrone.gameObject.transform.position = initialPos;
                     i++;
+                    var destination = GameObject.Find("Destination").gameObject.transform.position;
+                    instDrone.GetComponent<NavMeshAgent>().SetDestination(destination);
                 }
 
                 // Selected a drone

@@ -1,17 +1,18 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 enum ConnectionStatus { Disconnected, Started, Connected, Failed };
 
 public class drone : MonoBehaviour
 {
-    List<Vector3> history = new List<Vector3>();
-    List<Vector3> waypoints = new List<Vector3>();
-    public float speed;
     const int MAX_COMMUNICATION_DISTANCE = 10;
     const int COMMUNICATION_FRAME_COUNT = 20;
     public bool connected = false;
     private Renderer rend;
+    [SerializeField]
+    public Transform destination;
+    public NavMeshAgent navAgent;
 
     // connection status from this Drone to all other neighbor Drones
     private Dictionary<drone, ConnectionStatus> neighbors = new Dictionary<drone, ConnectionStatus>();
@@ -32,6 +33,12 @@ public class drone : MonoBehaviour
         rend = GetComponent<Renderer>();
         // start the colors RED
         SetColor(Color.red);
+        navAgent = GetComponent<NavMeshAgent>();
+        Debug.Assert(navAgent != null);
+        if (destination != null)
+        {
+            navAgent.SetDestination(destination.transform.position);
+        }
     }
 
     private int FrameCount = 0;
@@ -87,13 +94,6 @@ public class drone : MonoBehaviour
     void Update()
     {
         MessageNeighbors();
-        if (waypoints.Count > 0)
-        {
-            transform.position = Vector3.Lerp(transform.position, waypoints[0], speed * Time.deltaTime);
-
-        }
-        //Debug.Log(transform.position + " | " + waypoints[0]);
-        //Debug.Log(waypoints.Count);
 
 
         foreach (var v in neighbors.Values)
@@ -124,29 +124,4 @@ public class drone : MonoBehaviour
         Destroy(pause_script.selectedObject);
     }
 
-    public void SetWaypoint(Vector3 point)
-    {
-        waypoints.Add(point);
-        foreach (Vector3 item in waypoints)
-        {
-            Debug.Log(item);
-        }
-    }
-
-    public void Fifo_remove()
-    {
-        history.Add(waypoints[0]);
-        waypoints.Remove(waypoints[0]);
-        Debug.Log("Rmove");
-        for (int i = 1; i < waypoints.Count; i++)
-        {
-            waypoints[i - 1] = waypoints[i];
-        }
-    }
-
-    public void RouteBtn()
-    {
-        Debug.Log("Ready to route");
-        pause_script.isRoute = true;
-    }
 }
