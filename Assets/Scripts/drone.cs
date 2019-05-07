@@ -32,8 +32,6 @@ public class drone : MonoBehaviour
         rend = GetComponent<Renderer>();
         // start the colors RED
         SetColor(Color.red);
-
-        SetWaypoint(new Vector3(0, 0, 0));
     }
 
     private int FrameCount = 0;

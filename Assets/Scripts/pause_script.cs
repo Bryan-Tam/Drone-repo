@@ -16,7 +16,6 @@ public class pause_script : MonoBehaviour
     public static GameObject selectedObject;
     private Image img;
     private int range = 1000;
-    private GameObject instDrone;
     private int i = 1;
     public static bool isRoute;
 
@@ -108,8 +107,11 @@ public class pause_script : MonoBehaviour
                     //Debug.Log("Hit!");
                     //Debug.Log("hit at" + hit.point);
                     Vector3 myPoint = new Vector3(hit.point.x, hit.point.y + .5f, hit.point.z);
-                    instDrone = Instantiate(drone, myPoint, Quaternion.identity);
+                    var instDrone = Instantiate(drone, myPoint, Quaternion.identity);
                     instDrone.name = "drone" + i;
+
+                    var initialPos = GameObject.Find("Spawn Point").gameObject.transform.position;
+                    instDrone.gameObject.transform.position = initialPos;
                     i++;
                 }
 
