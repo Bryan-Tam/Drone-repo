@@ -46,7 +46,7 @@ public class drone : MonoBehaviour
         if (FrameCount == COMMUNICATION_FRAME_COUNT)
         {
             FrameCount = 0;
-            var hitColliders = Physics.OverlapSphere(transform.position, MAX_COMMUNICATION_DISTANCE * 1000);
+            var hitColliders = Physics.OverlapSphere(transform.position, MAX_COMMUNICATION_DISTANCE);
             foreach (Collider c in hitColliders)
             {
                 var maybeDrone = c.GetComponent<drone>();
