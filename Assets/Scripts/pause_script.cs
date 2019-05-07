@@ -6,6 +6,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.AI;
+using System.Linq;
+using System;
 
 public class pause_script : MonoBehaviour
 {
@@ -17,8 +19,10 @@ public class pause_script : MonoBehaviour
     public static GameObject selectedObject;
     private Image img;
     private int range = 1000;
-    private int i = 1;
+    private int nextDroneId = 1;
     public static bool isRoute;
+
+    private int numOfDronesToSpawn = 10;
 
     // Start is called before the first frame update
     void Start()
@@ -31,6 +35,21 @@ public class pause_script : MonoBehaviour
         //rend = drone.GetComponent<Renderer>();
         //rend.material.shader = Shader.Find("_color");
 
+        // spawn a number of drones inside the spawn area
+        foreach (var i in Enumerable.Range(0, numOfDronesToSpawn)) {
+            Debug.Log(i);
+
+            var pos = getRandomSpawnPoint();
+            CreateDrone(pos);
+
+        }
+
+
+    }
+
+    private Vector3 getRandomSpawnPoint()
+    {
+        return GameObject.Find("Spawn Point").gameObject.transform.position;
     }
 
     // Update is called once per frame
@@ -96,18 +115,8 @@ public class pause_script : MonoBehaviour
                 // Selected ground
                 if (hit.collider.gameObject.layer == 9)
                 {
-                    // Places "drone" prefab into scene
-                    //Debug.Log("Hit!");
-                    //Debug.Log("hit at" + hit.point);
-                    Vector3 myPoint = new Vector3(hit.point.x, hit.point.y + .5f, hit.point.z);
-                    var instDrone = Instantiate(drone, myPoint, Quaternion.identity);
-                    instDrone.name = "drone" + i;
-
                     var initialPos = GameObject.Find("Spawn Point").gameObject.transform.position;
-                    instDrone.gameObject.transform.position = initialPos;
-                    i++;
-                    var destination = GameObject.Find("Destination").gameObject.transform.position;
-                    instDrone.GetComponent<NavMeshAgent>().SetDestination(destination);
+                    CreateDrone(initialPos);
                 }
 
                 // Selected a drone
@@ -123,6 +132,15 @@ public class pause_script : MonoBehaviour
         {
             Pause();
         }
+    }
+
+    private void CreateDrone(Vector3 pos)
+    {
+        var instDrone = Instantiate(drone, pos, Quaternion.identity);
+        instDrone.name = "drone" + nextDroneId;
+        nextDroneId++;
+        var destination = GameObject.Find("Destination").gameObject.transform.position;
+        instDrone.GetComponent<NavMeshAgent>().SetDestination(destination);
     }
 
     void ClearSelection()
