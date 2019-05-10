@@ -32,8 +32,9 @@ public class pause_script : MonoBehaviour
         Time.timeScale = 0;
         img = play_pause.GetComponent<Image>();
         img.color = Color.yellow;
-        //rend = drone.GetComponent<Renderer>();
-        //rend.material.shader = Shader.Find("_color");
+
+        // Don't spawn a bunch of drones. We are currently using pre-placed game objects for our simulation.
+        return;
 
         // spawn a number of drones inside the spawn area
         foreach (var i in Enumerable.Range(0, numOfDronesToSpawn)) {

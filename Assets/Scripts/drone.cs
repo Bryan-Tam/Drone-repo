@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,18 +8,16 @@ enum ConnectionStatus { Disconnected, Started, Connected, Failed };
 public class drone : MonoBehaviour
 {
     const int MAX_COMMUNICATION_DISTANCE = 10;
-    const int COMMUNICATION_FRAME_COUNT = 20;
+    const int COMMUNICATION_DURATION_SECONDS = 2;
     public bool connected = false;
     private Renderer rend;
     [SerializeField]
     public Transform destination;
     public NavMeshAgent navAgent;
 
-    // connection status from this Drone to all other neighbor Drones
-    private Dictionary<drone, ConnectionStatus> neighbors = new Dictionary<drone, ConnectionStatus>();
     void SetColor(Color c)
     {
-        
+
         rend.material.shader = Shader.Find("_Color");
         rend.material.SetColor("_Color", c);
 
@@ -35,57 +34,25 @@ public class drone : MonoBehaviour
         SetColor(Color.red);
         navAgent = GetComponent<NavMeshAgent>();
         Debug.Assert(navAgent != null);
+
         if (destination != null)
         {
             navAgent.SetDestination(destination.transform.position);
         }
     }
 
-    private int FrameCount = 0;
-
-    internal Dictionary<drone, ConnectionStatus> Neighbors { get => neighbors; set => neighbors = value; }
-
     void MessageNeighbors()
     {
-        // only run sometimes
-        if (FrameCount == COMMUNICATION_FRAME_COUNT)
+        var hitColliders = Physics.OverlapSphere(transform.position, MAX_COMMUNICATION_DISTANCE);
+        foreach (Collider c in hitColliders)
         {
-            FrameCount = 0;
-            var hitColliders = Physics.OverlapSphere(transform.position, MAX_COMMUNICATION_DISTANCE);
-            foreach (Collider c in hitColliders)
+            var maybeDrone = c.GetComponent<drone>();
+            if (maybeDrone == null || maybeDrone == this)
             {
-                var maybeDrone = c.GetComponent<drone>();
-                if (maybeDrone != null && maybeDrone != this)
-                {
-                    Debug.Log($"collision {c}");
-
-                    maybeDrone.SendMessage("Ping", this);
-                }
-
+                continue;
             }
-        }
-        FrameCount++;
-    }
-
-    // advance connection status from sender to next state
-    void NeighborNextState(Dictionary<drone, ConnectionStatus> droneStatuses, drone remoteDrone)
-    {
-        if (neighbors.ContainsKey(remoteDrone))
-        {
-            var currentStatus = neighbors[remoteDrone];
-            switch (currentStatus)
-            {
-                case ConnectionStatus.Disconnected:
-                    neighbors[remoteDrone] = ConnectionStatus.Started;
-                    break;
-                case ConnectionStatus.Started:
-                    neighbors[remoteDrone] = ConnectionStatus.Connected;
-                    break;
-
-            }
-        } else
-        {
-            neighbors.Add(remoteDrone, ConnectionStatus.Started);
+            Debug.Log("Sending message to drone");
+            maybeDrone.SendMessage("Ping", (sender: this, message: "connect"));
         }
 
     }
@@ -95,28 +62,30 @@ public class drone : MonoBehaviour
     {
         MessageNeighbors();
 
-
-        foreach (var v in neighbors.Values)
-        {
-            if (v == ConnectionStatus.Connected)
-            {
-                connected = true;
-                break;
-            }
-        }
-
         if (connected)
         {
-            Debug.Log("CONNECTED");
             SetColor(Color.green);
         }
     }
 
     // Contacted by Drone that wants to communicate
-    public void Ping(drone sender)
+    public async void Ping((drone sender, string message) payload)
     {
-        Debug.Log($"received ping from: {sender}");
-        NeighborNextState(neighbors, sender);
+        Debug.Log($"received ping from: {payload.sender} with message: {payload.message}");
+        await Task.Delay(TimeSpan.FromSeconds(COMMUNICATION_DURATION_SECONDS));
+        Debug.Log("connection duration completed");
+
+        // See if drones are still within connection distance after waiting for connection to process
+        var distance = Vector3.Distance(transform.position, payload.sender.transform.position);
+        if (distance <= MAX_COMMUNICATION_DISTANCE)
+        {
+            Debug.Log("Drones connected within necessary duration");
+            connected = true;
+        }
+        else
+        {
+            Debug.Log("Drones were too far apart to connect.");
+        }
     }
 
     public void Delete()
