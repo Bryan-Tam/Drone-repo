@@ -1,13 +1,10 @@
 ﻿// Simulation Code
 
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
-using UnityEngine.AI;
 using System.Linq;
-using System;
+using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class pause_script : MonoBehaviour
 {
@@ -18,11 +15,11 @@ public class pause_script : MonoBehaviour
 
     public static GameObject selectedObject;
     private Image img;
-    private int range = 1000;
+    private readonly int range = 1000;
     private int nextDroneId = 1;
     public static bool isRoute;
 
-    private int numOfDronesToSpawn = 10;
+    private readonly int numOfDronesToSpawn = 10;
 
     // Start is called before the first frame update
     void Start()
@@ -30,14 +27,18 @@ public class pause_script : MonoBehaviour
         paused = true;
         isRoute = false;
         Time.timeScale = 0;
-        img = play_pause.GetComponent<Image>();
-        img.color = Color.yellow;
+        if (play_pause)
+        {
+            img = play_pause.GetComponent<Image>();
+            img.color = Color.yellow;
+        }
 
         // Don't spawn a bunch of drones. We are currently using pre-placed game objects for our simulation.
         return;
 
         // spawn a number of drones inside the spawn area
-        foreach (var i in Enumerable.Range(0, numOfDronesToSpawn)) {
+        foreach (var i in Enumerable.Range(0, numOfDronesToSpawn))
+        {
             Debug.Log(i);
 
             var pos = getRandomSpawnPoint();
@@ -74,7 +75,7 @@ public class pause_script : MonoBehaviour
             if (Physics.Raycast(ray, out hit, range, layermask))
             {
                 // Selected ground
-                
+
                 if (hit.collider.gameObject.layer == 9)
                 {
                     if (!isRoute)
@@ -146,7 +147,7 @@ public class pause_script : MonoBehaviour
 
     void ClearSelection()
     {
-        if(selectedObject != null)
+        if (selectedObject != null)
         {
             selectedObject.GetComponentInChildren<Canvas>().enabled = false;
             selectedObject.GetComponentInChildren<Projector>().enabled = false;
@@ -156,7 +157,7 @@ public class pause_script : MonoBehaviour
 
     void SelectObject(GameObject obj)
     {
-       if (selectedObject != null)
+        if (selectedObject != null)
         {
             if (obj == selectedObject)
             {
@@ -166,7 +167,7 @@ public class pause_script : MonoBehaviour
         }
 
         selectedObject = obj;
-        selectedObject.GetComponentInChildren<Canvas>().enabled=true;
+        selectedObject.GetComponentInChildren<Canvas>().enabled = true;
         selectedObject.GetComponentInChildren<Projector>().enabled = true;
     }
 
@@ -177,7 +178,7 @@ public class pause_script : MonoBehaviour
         {
             Time.timeScale = 0;
             //rend.material.SetColor("_Color", Color.yellow);
-            
+
             img.color = Color.yellow;
         }
         if (!paused)
