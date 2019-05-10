@@ -8,7 +8,7 @@ enum ConnectionStatus { Disconnected, Started, Connected, Failed };
 public class drone : MonoBehaviour
 {
     const int MAX_COMMUNICATION_DISTANCE = 10;
-    const int COMMUNICATION_DURATION_SECONDS = 2;
+    const float COMMUNICATION_DURATION_SECONDS = 0.1F;
     public bool connected = false;
     private Renderer rend;
     [SerializeField]
@@ -79,8 +79,15 @@ public class drone : MonoBehaviour
         var distance = Vector3.Distance(transform.position, payload.sender.transform.position);
         if (distance <= MAX_COMMUNICATION_DISTANCE)
         {
+            if (connected)
+            {
+                Debug.Log("Drones already connected");
+            }
             Debug.Log("Drones connected within necessary duration");
             connected = true;
+            var agent = GetComponent<NavMeshAgent>();
+            agent.speed *= 1.25F;
+            agent.angularSpeed *= 1.25F;
         }
         else
         {
